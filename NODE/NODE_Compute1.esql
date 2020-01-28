@@ -3,8 +3,8 @@
 CREATE COMPUTE MODULE NODE_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
-		 CALL CopyMessageHeaders();
-		 CALL CopyEntireMessage();
+		 --CALL CopyMessageHeaders();
+		 --CALL CopyEntireMessage();
 		RETURN TRUE;
 	END;
 
