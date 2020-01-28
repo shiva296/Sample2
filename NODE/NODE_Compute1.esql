@@ -20,6 +20,6 @@ CREATE COMPUTE MODULE NODE_Compute1
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 	DECLARE a CHARACTER;
-		SET OutputRoot.json = InputRoot;
+		SET OutputRoot.shiva = InputRoot;
 	END;
 END MODULE;
