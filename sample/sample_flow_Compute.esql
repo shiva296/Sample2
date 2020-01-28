@@ -12,7 +12,7 @@ CREATE COMPUTE MODULE sample_flow_Compute
 	
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
-		SET OutputRoot.JSON.Data.details.C = CAST(InputRoot.XMLNSC.details.a AS INTEGER) + CAST(InputRoot.XMLNSC.details.b AS INTEGER);
+		SET OutputRoot.JSON.Data.details.G = CAST(InputRoot.XMLNSC.details.a AS INTEGER) + CAST(InputRoot.XMLNSC.details.b AS INTEGER);
 
 		-- SET OutputRoot.JSON.Data.Info = InputRoot.XMLNSC.Details;
 	END;
