@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="row.msgflow"
+    nsPrefix="row.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="row" bundleName="row" pluginId="Lab1.0.4_ESQL_Comp_ROW_Function"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Lab1.0.4_ESQL_Comp_ROW_Function/icons/full/obj16/row.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Lab1.0.4_ESQL_Comp_ROW_Function/icons/full/obj30/row.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="114,31" queueName="IN" messageDomainProperty="XMLNSC">
+        <translation xmi:type="utility:ConstantString" string="MQ Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="274,31" computeExpression="esql://routine/#row_Compute.Main">
+        <translation xmi:type="utility:ConstantString" string="Compute"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="459,32" queueName="OUT">
+        <translation xmi:type="utility:ConstantString" string="MQ Output"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard>
+      <stickyNote location="114,112" association="FCMComposite_1_1">
+        <body xmi:type="utility:ConstantString" string="Here it doesn't require any Input message.&#xA;Simply we can trigger the flow with any dummy message."/>
+      </stickyNote>
+      <stickyNote location="459,113" association="FCMComposite_1_3">
+        <body xmi:type="utility:ConstantString" string="&lt;Library>&#xA;&lt;Book>XML Developer&lt;/Book>&#xA;&lt;Author>Kristy Powel&lt;/Author>&#xA;&lt;Cost>20$&lt;/Cost>&#xA;&lt;/Library>"/>
+      </stickyNote>
+      <stickyNote location="50,262">
+        <body xmi:type="utility:ConstantString" string="ROW constructor is a complex function used to explicitly generate rows of values that can be assigned to fields in an output message.&#xA;ROW is also like LIST Functio itself. &#xA;But Syntax will be varied. It also creates an XMLNSC message.&#xA;Example: If we declare so, SET OutputRoot.XMLNSC.Library = ROW('XML Developer' AS Book,&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;'Kristy Powel' AS Author,&#xD;&#xA;&#x9;&#x9;&#x9;&#x9; '20$' AS Cost);  then&#xA;Output XMLNSC message will be created as &#xA;&lt;Library>&#xA;&lt;Book>XML Developer&lt;/Book>&#xA;&lt;Author>Kristy Powel&lt;/Author>&#xA;&lt;Cost>20$&lt;/Cost>&#xA;&lt;/Library>"/>
+      </stickyNote>
+    </stickyBoard>
+  </eClassifiers>
+</ecore:EPackage>
