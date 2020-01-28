@@ -20,6 +20,6 @@ CREATE COMPUTE MODULE NODE_Compute1
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 	DECLARE a CHARACTER;
-		SET OutputRoot.shiva = InputRoot;
+		SET OutputRoot.replace = InputRoot;
 	END;
 END MODULE;
