@@ -1,0 +1,49 @@
+
+
+CREATE COMPUTE MODULE select_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		 CALL CopyMessageHeaders();
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+		
+		    --The SELECT function combines, filters, and transforms complex message and database data. 
+		DECLARE Result CHARACTER;
+		DECLARE Qry ROW;
+		SET Qry.Records[] = SELECT * FROM Database.system.EMPLOYEE; --returns the records to be retrieved from the dataase
+		SET OutputRoot.XMLNSC.MSG = 'Records Retrieved Successfully';
+		SET OutputRoot.XMLNSC.Result.Qry = Qry;
+		
+		DECLARE table ROW;
+		SET table.Part[] = SELECT T.NO,T.NAME,T.CITY FROM Database.system.EMPLOYEE AS T;
+		SET OutputRoot.XMLNSC.MSG = 'Records Retrieved Successfully';
+		SET OutputRoot.XMLNSC.Result.table = table;
+		
+		SET OutputRoot.XMLNSC.Result.TableData.Part[] = SELECT T.N0,T.NAME,T.CITY FROM table.Part[] AS T;
+		SET OutputRoot.XMLNSC.MSG = 'Records Retrieved Successfully';
+		
+		DECLARE card INTEGER;
+		SET card = CARDINALITY(SELECT * FROM Database.system.EMPLOYEE);
+		SET OutputRoot.XMLNSC.Result.card = card;
+		
+        
+         
+	END;
+END MODULE;
+
+

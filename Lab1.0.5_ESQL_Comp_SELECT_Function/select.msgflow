@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="select.msgflow"
+    nsPrefix="select.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="select" bundleName="select" pluginId="Lab1.0.5_ESQL_Comp_SELECT_Function"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Lab1.0.5_ESQL_Comp_SELECT_Function/icons/full/obj16/select.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Lab1.0.5_ESQL_Comp_SELECT_Function/icons/full/obj30/select.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="145,27" queueName="IN">
+        <translation xmi:type="utility:ConstantString" string="MQ Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="276,27" dataSource="ORADSN" computeExpression="esql://routine/#select_Compute.Main">
+        <translation xmi:type="utility:ConstantString" string="Compute"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="395,28" queueName="OUT">
+        <translation xmi:type="utility:ConstantString" string="MQ Output"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard>
+      <stickyNote location="89,185">
+        <body xmi:type="utility:ConstantString" string="The SELECT function is the usual and most efficient way of transforming messages.We can use SELECT to:&#xA;Retrieve Data from Rows in Database table.&#xD;&#xA;&#xD;&#xA;    Comprehensively reformat messages&#xD;&#xA;    Access database tables&#xD;&#xA;    Make an output array that is a subset of an input array&#xD;&#xA;    Make an output array that contains only the values of an input array&#xD;&#xA;    Count the number of entries in an array&#xD;&#xA;    Select the minimum or maximum value from a number of entries in an array&#xD;&#xA;    Sum the values in an array&#xD;&#xA;"/>
+      </stickyNote>
+      <stickyNote location="145,106" association="FCMComposite_1_1">
+        <body xmi:type="utility:ConstantString" string="Here it doesn't require any Input message.&#xA;Simply we can trigger the flow with any dummy message."/>
+      </stickyNote>
+      <stickyNote location="721,66">
+        <body xmi:type="utility:ConstantString" string="Here, we have to create one Table in ORACLE10g....&#xA;so we can retrive the Records from Database.&#xA;&#xA;DSN NAME : ORADSN(for all Compute node)&#xA;&#xA;As Schema Name >> system&#xA;Password>> sarasu10&#xA;Table Name>> EMPLOYEE&#xA;&#xA;&#xA;QUERY: &#xA;CREATE TABLE  &quot;EMPLOYEE&quot; (&#x9;&quot;NO&quot; NUMBER, &#xD;&quot;NAME&quot; VARCHAR2(4000), &quot;CITY&quot; VARCHAR2(4000) )&#xA;&#xA;&#xD;"/>
+      </stickyNote>
+      <stickyNote location="739,386">
+        <body xmi:type="utility:ConstantString" string="Common Prerequisites to Interact with Oracle Database:&#xA;Database Connection...For ORACLE DATABASE &#xD;&#xA;&#xD;&#xA;Install Oracle11g Into System and give password sarasu10 while installing...&#xD;&#xA;&#xD;&#xA;1.Creating DSN&#xD;&#xA;-----Go to ->START -> CONTROL PANEL -> ADMINISTRATIVE TOOLS -> DATA SOURCE ODBC ->&#xD;&#xA;&#x9;&#x9;&#x9;CLICK SYSTEM DSN -> ADD -> &#xD;&#xA;&#x9;&#x9;&#x9;Select ORACLE WIRE PROTOCOL -> &#xD;&#xA;2.Under General Tab&#xD;&#xA;------GIVE DATA SOURCE NAME = ORADSN&#xD;&#xA;&#x9;STANDARD HOST = LOCALHOST&#xD;&#xA;&#x9;PORT NUMBER  = 1521&#xD;&#xA;&#x9;SERVICE NAME  =XE&#xD;&#xA;&#x9;CLick TestCONNECT ->USERNAME ->SYSTEM PASSWORD ->sarasu10&#xD;&#xA;&#x9;you will get a message connection established if above all setting are fine&#xD;&#xA;&#x9; CLICK OK&#xD;&#xA;3.Under Advanced tab &#xD;&#xA;-------Check box the Enable SQLDescribe Param&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;  &#xD;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;  &#xD;&#xA;4.CREATE A TABLE ACCORDING TO THE REQUIREMENT IN ORACLE&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xD;&#xA;&#x9;Go to Oracle database 10g -> Go to database Homepage -> username->system&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;password-> sarasu10&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;go to object browser->create table -> CREATE TABLE  &quot;EMPLOYEE&quot; &#xD;&#xA;   (&#x9;&quot;NO&quot; NUMBER, &#xD;&#xA;&#x9;&quot;NAME&quot; VARCHAR2(4000), &#xD;&#xA;&#x9;&quot;CITY&quot; VARCHAR2(4000)&#xD;&#xA;   )&#xD;&#xA;/&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;   &#xD;&#xA;5.Then go to &#x9;IBM INTEGRATION CONSOLE TYPE -> mqsisetdbparms BrokerName -n DataSourceName -u Username -p Password&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;-> mqsistop Brokername&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;-> mqsistart Brokername&#xD;&#xA;Go to IBM INTEGRATION TOOL KIT ->CLick Compute Node ->BOTTOM SIDE ->SELECT PROPERTY ->GIVE DATASOURCE NAME ->ORADSN&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;   "/>
+      </stickyNote>
+    </stickyBoard>
+  </eClassifiers>
+</ecore:EPackage>
