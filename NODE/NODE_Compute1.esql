@@ -20,6 +20,6 @@ CREATE COMPUTE MODULE NODE_Compute1
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 	DECLARE a CHARACTER;
-		SET OutputRoot = InputRoot;
+		SET OutputRoot.json = InputRoot;
 	END;
 END MODULE;
