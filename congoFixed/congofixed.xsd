@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:recFixLengthFieldsFmt="http://www.ibm.com/dfdl/RecordFixLengthFieldFormat">
+
+    <xsd:import namespace="http://www.ibm.com/dfdl/RecordFixLengthFieldFormat" schemaLocation="IBMdefined/RecordFixLengthFieldFormat.xsd"/>
+    <xsd:annotation>
+		<xsd:appinfo source="http://www.ogf.org/dfdl/">
+			<dfdl:format encoding="{$dfdl:encoding}" escapeSchemeRef="" occursCountKind="fixed" ref="recFixLengthFieldsFmt:RecordFixLengthFieldsFormat"/>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+	<xsd:element dfdl:lengthKind="delimited" ibmSchExtn:docRoot="true" name="congofixed">
+		<xsd:complexType>
+			<xsd:sequence dfdl:separator="%CR;%LF;%WSP*;" dfdl:separatorSuppressionPolicy="anyEmpty">
+				<xsd:element dfdl:initiator="" dfdl:lengthKind="delimited" dfdl:occursCountKind="implicit" dfdl:terminator="" maxOccurs="unbounded" name="body">
+					<xsd:complexType>
+						<xsd:sequence dfdl:initiator="[&quot;{" dfdl:terminator="}&quot;]">
+							<xsd:element default="CATPURPOSECODE" dfdl:initiator="'" dfdl:length="14" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_valu1" name="CATPURPOSECODE" type="xsd:string"/>
+							<xsd:element default="CASH" dfdl:initiator="'" dfdl:length="4" dfdl:terminator="',%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_valu2" name="body_elem2" type="xsd:string"/>
+							<xsd:element default="DEPOSITORACCT" dfdl:initiator="'" dfdl:length="13" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_valu3" name="DEPOSITORACCT" type="xsd:string"/>
+                            <xsd:element dfdl:length="11" dfdl:terminator=",%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value4" name="body_elem4" type="xsd:string"/>
+                            <xsd:element default="PRESENTMENTDATE" dfdl:initiator="'" dfdl:length="15" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value5" name="PRESENTMENTDATE" type="xsd:string"/>
+                            <xsd:element dfdl:length="8" dfdl:terminator=",%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value6" name="body_elem6" type="xsd:string"/>
+                            <xsd:element default="DRAWERNAME" dfdl:initiator="'" dfdl:length="10" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value7" name="DRAWERNAME" type="xsd:string"/>
+                            <xsd:element dfdl:initiator="'" dfdl:length="35" dfdl:terminator="',%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value8" name="body_elem8" type="xsd:string"/>
+                            <xsd:element default="TRANSDETAIL" dfdl:initiator="'" dfdl:length="11" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value9" name="TRANSDETAIL" type="xsd:string"/>
+                            <xsd:element dfdl:initiator="'" dfdl:length="25" dfdl:terminator="',%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value10" name="body_elem10" type="xsd:string"/>
+                            <xsd:element default="TRUNCATINGRTNO" dfdl:initiator="'" dfdl:length="14" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value11" name="TRUNCATINGRTNO" type="xsd:string"/>
+                            <xsd:element dfdl:initiator="'" dfdl:length="5" dfdl:terminator="',%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value12" name="body_elem12" type="xsd:string"/>
+                            <xsd:element default="AMOUNT" dfdl:initiator="'" dfdl:length="6" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value13" name="AMOUNT" type="xsd:string"/>
+                            <xsd:element dfdl:length="10" dfdl:terminator=",%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value14" name="body_elem14" type="xsd:string"/>
+                            <xsd:element default="PAYEENAME" dfdl:initiator="'" dfdl:length="9" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value15" name="PAYEENAME" type="xsd:string"/>
+                            <xsd:element dfdl:initiator="'" dfdl:length="35" dfdl:terminator="',%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value16" name="body_elem16" type="xsd:string"/>
+                            <xsd:element default="PURPOSECODE" dfdl:initiator="'" dfdl:length="11" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value17" name="PURPOSECODE" type="xsd:string"/>
+                            <xsd:element dfdl:initiator="'" dfdl:length="4" dfdl:terminator="',%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value18" name="body_elem18" type="xsd:string"/>
+                            <xsd:element default="PAYORBANKROUTNO" dfdl:initiator="'" dfdl:length="15" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value19" name="PAYORBANKROUTNO" type="xsd:string"/>
+                            <xsd:element dfdl:initiator="'" dfdl:length="12" dfdl:terminator="',%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value20" name="body_elem20" type="xsd:string"/>
+                            <xsd:element default="LOCALINST" dfdl:initiator="'" dfdl:length="9" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value21" name="LOCALINST" type="xsd:string"/>
+                            <xsd:element dfdl:initiator="'" dfdl:length="3" dfdl:terminator="',%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value22" name="body_elem22" type="xsd:string"/>
+                            <xsd:element default="INSTRUMENTTYPE" dfdl:initiator="'" dfdl:length="14" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value23" name="INSTRUMENTTYPE" type="xsd:string"/>
+                            <xsd:element default="CR" dfdl:initiator="'" dfdl:length="2" dfdl:terminator="',%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value24" name="body_elem24" type="xsd:string"/>
+                            <xsd:element default="BENACCOUNTNO" dfdl:initiator="'" dfdl:length="12" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value25" name="BENACCOUNTNO" type="xsd:string"/>
+                            <xsd:element dfdl:length="11" dfdl:terminator=",%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value26" name="body_elem26" type="xsd:string"/>
+                            <xsd:element default="CLACC" dfdl:initiator="'" dfdl:length="5" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value27" name="CLACC" type="xsd:string"/>
+                            <xsd:element dfdl:initiator="'" dfdl:length="23" dfdl:terminator="',%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value28" name="body_elem28" type="xsd:string"/>
+                            <xsd:element default="CCY" dfdl:initiator="'" dfdl:length="3" dfdl:terminator="':%SP;" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value29" name="CCY" type="xsd:string"/>
+                            <xsd:element default="CDF" dfdl:initiator="'" dfdl:length="3" dfdl:terminator="'" dfdl:textPadKind="padChar" ibmDfdlExtn:sampleValue="body_value30" name="body_elem30" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+</xsd:schema>
