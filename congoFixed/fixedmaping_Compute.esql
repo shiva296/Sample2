@@ -4,10 +4,15 @@ CREATE COMPUTE MODULE fixedmaping_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		-- CALL CopyMessageHeaders();
-		 CALL CopyEntireMessage();
+		  CALL CopyEntireMessage();
 		RETURN TRUE;
-	END;
-                 CREATE PROCEDURE CopyEntireMessage() BEGIN
+	END;        
+	
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+		
 		DECLARE I INTEGER 1;
 		DECLARE ref REFERENCE TO InputRoot.XMLNSC.MSG[>];
 	WHILE LASTMOVE(ref) DO
@@ -26,6 +31,5 @@ CREATE COMPUTE MODULE fixedmaping_Compute
  SET I=I+1;
  MOVE ref NEXTSIBLING;
  END WHILE;
-	
 	END;
 END MODULE;

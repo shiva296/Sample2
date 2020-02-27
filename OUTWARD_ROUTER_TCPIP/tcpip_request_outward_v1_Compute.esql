@@ -1,0 +1,112 @@
+PATH com.sb.logging;
+CREATE COMPUTE MODULE tcpip_request_outward_v1_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		IF InputRoot.Properties.ReplyProtocol = 'SOAP-HTTP' THEN
+			--Transaction body storing in a char
+			DECLARE inputChar CHARACTER CAST(ASBITSTREAM(InputRoot.JSON) AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+			DECLARE msgId CHARACTER CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS CHARACTER);
+			DECLARE protoType CHARACTER InputRoot.Properties.ReplyProtocol;
+			--Customizing MQRFH2 headers
+			--Creation og Router Header and Business flow headers
+			SET OutputRoot.MQRFH2.usr.RouterHeader.Header = InputRoot.JSON.Data.Header;
+			SET OutputRoot.MQRFH2.usr.RouterHeader.transactionId = InputRoot.JSON.Data.Body.TransactionId;
+			SET OutputRoot.MQRFH2.usr.RouterHeader.msgId = msgId;
+			SET OutputRoot.MQRFH2.usr.RouterHeader.correlationId = msgId;
+			SET OutputRoot.MQRFH2.usr.RouterHeader.replyProtocol = protoType;
+			SET OutputRoot.MQRFH2.usr.RouterHeader.replyId = InputLocalEnvironment.Destination.HTTP.RequestIdentifier;
+			SET OutputRoot.MQRFH2.usr.BusinessFlowHeader = '';
+
+			DELETE FIELD OutputRoot.HTTPInputHeader;
+			SET OutputRoot.JSON.Data = InputRoot.JSON.Data;
+			-- CALL dbAuditLog(MESSAGEID, )
+			-- CALL AUDIT_LOGGING( MSGID, CORRID, TCPIPID,PROTOTYPE,LOGTYPE,APPNAME,COMPNAME,MSG,TIME_STAMP,CRETIME,FLOW_NAME);
+		-- 	CALL AUDIT_LOGGING( msgId, msgId, '',protoType,'Info','OUTWARD_ROUTER_TCPIP','reqPropagation',inputChar,CURRENT_TIMESTAMP,CAST(InputRoot.Properties.CreationTime AS TIMESTAMP),'tcpip_request_outward_v1') IN Database.DSNFARU.SYSTEM;
+			-- INSERT INTO Database.DSNFARU.SYSTEM.AUDIT_LOG(MESSAGEID,PROTOTYPE,LOGTYPE,APPLICATIONNAME,COMPONENTNAME,MESSAGE,TIMESTAMP,CREATIONTIME,FLOW_NAME ) VALUES (msgId,InputRoot.Properties.ReplyProtocol,'Info','OUTWARD_ROUTER_TCPIP','reqPropagation',inputChar,CURRENT_TIMESTAMP,InputRoot.Properties.CreationTime,'tcpip_request_outward_v1');
+
+		ELSE 
+
+			DECLARE inRef REFERENCE TO InputLocalEnvironment.TCPIP.Input.ConnectionDetails;
+			DECLARE msgid BLOB CAST(inRef.SequenceNumber.InputRecord AS BLOB CCSID 1205)||CAST(inRef.Id AS BLOB CCSID 1205);
+			DECLARE msgid2 CHARACTER CAST(msgid AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId);
+			DECLARE inputChar CHARACTER CAST(ASBITSTREAM(InputRoot.JSON.Data) AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+			-- DECLARE inputChar CHARACTER CAST(InputRoot.XMLNSC AS CHARACTER);
+			SET OutputRoot.MQRFH2.usr.RouterHeader.msgId = msgid;
+			SET OutputRoot.MQRFH2.usr.RouterHeader.replyProtocol = InputRoot.Properties.ReplyProtocol;
+			SET OutputRoot.MQRFH2.usr.RouterHeader.replyId = inRef.Id;
+			SET OutputRoot.MQRFH2.usr.RouterHeader.clientHostname = inRef.ClientDetails.Hostname;
+			SET OutputRoot.MQRFH2.usr.RouterHeader.clientIp = inRef.ClientDetails.Address;
+			SET OutputRoot.MQRFH2.usr.TCPIPHeader.Input.ConnectionDetails.type = inRef.Type;
+			SET OutputRoot.MQRFH2.usr.TCPIPHeader.Input.ConnectionDetails.hostname = inRef.Hostname;
+			SET OutputRoot.MQRFH2.usr.TCPIPHeader.Input.ConnectionDetails.port = inRef.Port;
+			SET OutputRoot.MQRFH2.usr.TCPIPHeader.Input.ConnectionDetails.id = inRef.Id;
+			SET OutputRoot.MQRFH2.usr.TCPIPHeader.Input.ConnectionDetails.openTimestamp = inRef.OpenTimestamp;
+			SET OutputRoot.MQRFH2.usr.TCPIPHeader.Input.ConnectionDetails.closeTimestamp = inRef.CloseTimestamp;
+			SET OutputRoot.MQRFH2.usr.TCPIPHeader.Input.ConnectionDetails.sequenceNumber.inputRecord = inRef.SequenceNumber.InputRecord;
+			SET OutputRoot.MQRFH2.usr.TCPIPHeader.Input.ConnectionDetails.sequenceNumber.outputRecord = inRef.SequenceNumber.OutputRecord;
+			SET OutputRoot.MQRFH2.usr.TCPIPHeader.Input.ConnectionDetails.clientDetails.hostname = inRef.ClientDetails.Hostname;
+			SET OutputRoot.MQRFH2.usr.TCPIPHeader.Input.ConnectionDetails.clientDetails.address = inRef.ClientDetails.Address;
+			SET OutputRoot.MQRFH2.usr.BusinessFlowHeader = '';
+--			SET OutputRoot.XMLNSC = InputRoot.XMLNSC;
+			SET OutputRoot.JSON.Data = InputRoot.JSON.Data;
+			-- INSERT INTO Database.DSNFARU.SYSTEM.AUDIT_LOG(MESSAGEID,TCPIP_ID,PROTOTYPE,LOGTYPE,APPLICATIONNAME,COMPONENTNAME,MESSAGE,TIMESTAMP,CREATIONTIME,FLOW_NAME ) VALUES (msgid,inRef.Id,InputRoot.Properties.ReplyProtocol,'Info','OUTWARD_ROUTER_TCPIP','reqPropagation',inputChar,CURRENT_TIMESTAMP,InputRoot.Properties.CreationTime,'tcpip_request_outward_v1');
+--			CALL AUDIT_LOGGING( msgid2, '', msgid2,InputRoot.Properties.ReplyProtocol,'Info','OUTWARD_ROUTER_TCPIP','reqPropagation',inputChar,CURRENT_TIMESTAMP,CAST(InputRoot.Properties.CreationTime AS TIMESTAMP),'tcpip_request_outward_v1') IN Database.DSNFARU.SYSTEM;
+--			IF SQLCODE = 0 THEN
+--				SET OutputLocalEnvironment.SQLSTATUS.Message = 'Success';
+--			ELSE
+--				SET OutputLocalEnvironment.SQLSTATUS.Message = 'Fail';
+--			END IF;
+		END IF;
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName = 'MINI_STMT_INQ';
+	END;
+END MODULE;
+
+CREATE COMPUTE MODULE tcpip_request_outward_v1_Failure_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+
+		DECLARE msgId CHARACTER CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS CHARACTER);
+		DECLARE protoType CHARACTER InputRoot.Properties.ReplyProtocol;
+		--Customizing MQRFH2 headers
+		--Creation og Router Header and Business flow headers		
+
+
+		SET OutputRoot.MQRFH2.usr.RouterHeader.transactionId = InputRoot.JSON.Data.Body.TransactionId;
+		SET OutputRoot.MQRFH2.usr.RouterHeader.msgId = msgId;
+		SET OutputRoot.MQRFH2.usr.RouterHeader.correlationId = msgId;
+		SET OutputRoot.MQRFH2.usr.RouterHeader.replyProtocol = protoType;
+		SET OutputRoot.MQRFH2.usr.RouterHeader.replyId = InputLocalEnvironment.Destination.HTTP.RequestIdentifier;
+		-- SET OutputRoot.JSON.Data.Header.AppType = headerRef.AppType;
+		-- SET OutputRoot.JSON.Data.Header.AppId = headerRef.AppId;
+		-- SET OutputRoot.JSON.Data.Header.AppReqId = headerRef.AppReqId;
+		-- SET OutputRoot.JSON.Data.Header.ChannelId = headerRef.ChannelId;
+		-- SET OutputRoot.JSON.Data.Header.Timestamp = headerRef.Timestamp;
+		SET OutputRoot.JSON.Data.Body.TransactionId = InputRoot.MQRFH2.usr.RouterHeader.transactionId;
+		SET OutputRoot.JSON.Data.Body.responseCode= Environment.TraceFileExc.errorCode;
+		SET OutputRoot.JSON.Data.Body.responseDesc = Environment.variable.exceptiondesc;
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName = 'RES_OUTWARD_INQ';
+	END;
+END MODULE;
