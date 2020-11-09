@@ -19,6 +19,7 @@ CREATE COMPUTE MODULE git_Compute
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
+	declare a=20;
 		SET OutputRoot.JSON.Data.response = InputRoot.XMLNSC.CustomerDetails;
 	END;
 END MODULE;
